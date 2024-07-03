@@ -1,0 +1,7 @@
+[
+    { "value": "mobile_banking_bbl", "label": "Bangkok Bank" },
+    { "value": "mobile_banking_kbank", "label": "Kasikorn Bank" },
+    { "value": "mobile_banking_ktb", "label": "Krungthai Bank" },
+    { "value": "mobile_banking_bay", "label": "Bank of Ayudhya" },
+    { "value": "mobile_banking_scb", "label": "Siam Commercial Bank" }
+  ]
