@@ -1,5 +1,6 @@
-import useOmiseCard from "@/app/hooks/useOmiseCard";
-import React, { useState } from "react";
+import useOmiseCard from "@/hooks/useOmiseCard";
+import next from "next";
+import React, { useEffect, useState } from "react";
 
 interface PromptPayProps {
   amount: number;
@@ -39,16 +40,20 @@ const PromptPay: React.FC<PromptPayProps> = ({
               Total: amount,
             }),
           });
-          
+
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
 
           const data = await response.json();
+          console.table(data)
           setPromptPayURL(data.promptPayURL);
           setMessage(
-            `PromptPay created successfully! Please scan the QR code.`
+            `PromptPay created successfully! Please scan the QR code. ${data.chargeID}`
           );
+          console.log("chargeID" + data.chargeID);
+
+          checkStatus(data.chargeID);
         } catch (error) {
           console.error("Error creating PromptPay:", error);
           setMessage(`PromptPay creation failed. Please try again.`);
@@ -56,6 +61,52 @@ const PromptPay: React.FC<PromptPayProps> = ({
       },
     });
   };
+
+  const checkStatus = async (
+    chargeID: string,
+    interval: number = 5000
+  ): Promise<void> => {
+    let paymentSuccess = false;
+
+    while (!paymentSuccess) {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/check-status/${chargeID}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        const expireTime = new Date(data.expire).getTime();
+        const currentTime = new Date().getTime();
+
+        if (expireTime > currentTime) {
+          if (data.status === "successful") {
+            paymentSuccess = true;
+            console.log("Status is Successful");
+            window.location.href = "/complete";
+            setMessage(`Payment Successful!`);
+            setPromptPayURL(null);
+          } else {
+            console.log("Status is Pending");
+          }
+        } else {
+          console.log("Status is Expired");
+          setMessage(`Payment Expired!`);
+          setPromptPayURL(null);
+          paymentSuccess = true;
+        }
+        
+        await new Promise((resolve) => setTimeout(resolve, interval));
+      } catch (error) {
+        console.error("Error checking payment status:", error);
+        break;
+      }
+    }
+  };
+
   return (
     <button
       type="button"

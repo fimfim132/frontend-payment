@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import useOmiseCard from "./hooks/useOmiseCard";
-import CreditCard from "./components/payment/CreditCard";
-import PromptPay from "./components/payment/PromptPay";
-import PriceButton from "./components/button/PriceButton";
-import MoblieBank from "./components/payment/MoblieBank";
-import TrueMoney from "./components/payment/TrueMoney";
-import AliPay from "./components/payment/AliPay";
+import CreditCard from "../components/payment/CreditCard";
+import PromptPay from "../components/payment/PromptPay";
+import PriceButton from "../components/button/PriceButton";
+import MoblieBank from "../components/payment/MoblieBank";
+import TrueMoney from "../components/payment/TrueMoney";
+import AliPay from "../components/payment/AliPay";
+
 
 export default function Home() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -75,12 +75,12 @@ export default function Home() {
           amount={amount}
           setPromptPayURL={setPromptPayURL}
         />
-        <TrueMoney 
+        <TrueMoney
           amount={amount}
           setMessage={setMessage}
           setAuthorize_uri={setAuthorize_uri}
           />
-          <AliPay 
+          <AliPay
           amount={amount}
           setMessage={setMessage}
           setAuthorize_uri={setAuthorize_uri}

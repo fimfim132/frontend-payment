@@ -1,4 +1,4 @@
-import useOmiseCard from "@/app/hooks/useOmiseCard";
+import useOmiseCard from "@/hooks/useOmiseCard";
 import React, { useState } from "react";
 
 interface MoblieBankProps {

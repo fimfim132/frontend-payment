@@ -1,4 +1,4 @@
-import useOmiseCard from "@/app/hooks/useOmiseCard";
+import useOmiseCard from "@/hooks/useOmiseCard";
 import React, { useRef, useState } from "react";
 
 interface CreditCardProps {

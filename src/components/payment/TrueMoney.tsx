@@ -1,13 +1,13 @@
-import useOmiseCard from '@/app/hooks/useOmiseCard';
+import useOmiseCard from '@/hooks/useOmiseCard';
 import React, { useState } from 'react';
 
-interface AliPayProps {
+interface TrueMoneyProps {
     amount: number;
     setMessage: (message: string | null) => void;
     setAuthorize_uri: (authorize_uri: string | null) => void;
 }
 
-const AliPay: React.FC<AliPayProps> = ({
+const TrueMoney: React.FC<TrueMoneyProps> = ({
     amount,
     setMessage,
     setAuthorize_uri,
@@ -27,10 +27,10 @@ const AliPay: React.FC<AliPayProps> = ({
           OmiseCard.open({
             amount: amount,
             currency: "THB",
-            defaultPaymentMethod: "alipay",
+            defaultPaymentMethod: "truemoney_jumpapp",
             onCreateTokenSuccess: async (token: string) => {
               try {
-                const response = await fetch("http://localhost:8080/alipay", {
+                const response = await fetch("http://localhost:8080/truemoney", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -49,11 +49,11 @@ const AliPay: React.FC<AliPayProps> = ({
                 const data = await response.json();
                 setAuthorize_uri(data.authorize_uri)
                 setMessage(
-                  `AliPay created successfully!`
+                  `TrueMoney created successfully!`
                 );
               } catch (error) {
-                console.error("Error creating AliPay:", error);
-                setMessage(`AliPay creation failed. Please try again.`);
+                console.error("Error creating TrueMoney:", error);
+                setMessage(`TrueMoney creation failed. Please try again.`);
               }
             },
           });
@@ -63,14 +63,14 @@ const AliPay: React.FC<AliPayProps> = ({
         type="button"
         onClick={handleMobileBank}
         id="promptPayButton"
-        className={`bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 ${
+        className={`bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300 ${
           !amount ? "opacity-50 cursor-not-allowed" : ""
         }`}
         disabled={!amount }
       >
-        Checkout AliPay
+        Checkout TrueMoney
       </button>
   );
 };
 
-export default AliPay;
+export default TrueMoney;
